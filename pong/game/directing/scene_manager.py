@@ -1,5 +1,4 @@
 # IMPORT STUFF HERE
-import csv
 from constants import *
 
 from game.casting.ball import Ball
@@ -7,7 +6,8 @@ from game.casting.body import Body
 from game.casting.point import Point
 from game.casting.text import Text
 from game.casting.image import Image
-from game.casting.label import Label 
+from game.casting.label import Label
+from game.casting.paddle import Paddle 
 from game.scripting.play_sound_action import PlaySoundAction
 from game.services.raylib.raylib_audio_service import RaylibAudioService
 from game.services.raylib.raylib_keyboard_service import RaylibKeyboardService
@@ -40,15 +40,10 @@ class SceneManager:
     # ----------------------------------------------------------------------------------------------
     
     def _prepare_new_game(self, cast, script):
-        self._add_stats(cast)
-        self._add_level(cast)
-        self._add_lives(cast)
-        self._add_score(cast)
+        self._add_scores(cast)
         self._add_ball(cast)
-        self._add_bricks(cast)
-        self._add_racket(cast)
+        self._add_paddle(cast)
         self._add_dialog(cast, ENTER_TO_START)
-
         self._add_initialize_script(script)
         self._add_load_script(script)
         script.clear_actions(INPUT)
@@ -60,9 +55,8 @@ class SceneManager:
     def _prepare_in_play(self, cast, script):
         self._activate_ball(cast)
         cast.clear_actors(DIALOG_GROUP)
-
         script.clear_actions(INPUT)
-        script.add_action(INPUT, self.CONTROL_RACKET_ACTION)
+        script.add_action(INPUT, self.CONTROL_PADDLE_ACTION)
         self._add_update_script(script)
         self._add_output_script(script)
 
@@ -83,7 +77,7 @@ class SceneManager:
     def _add_ball(self, cast):
         cast.clear_actors(BALL_GROUP)
         x = CENTER_X - BALL_WIDTH / 2
-        y = SCREEN_HEIGHT - RACKET_HEIGHT - BALL_HEIGHT  
+        y = SCREEN_WIDTH + PADDLE_WIDTH + BALL_WIDTH
         position = Point(x, y)
         size = Point(BALL_WIDTH, BALL_HEIGHT)
         velocity = Point(0, 0)
@@ -101,7 +95,6 @@ class SceneManager:
         cast.add_actor(DIALOG_GROUP, label)
 
 
-
     def _add_score(self, cast):
         # cast.clear_actors(SCORE_GROUP)
         # cast.add_actor(SCORE_GROUP, label)
@@ -113,10 +106,31 @@ class SceneManager:
         # cast.add_actor(STATS_GROUP, stats)
         return
 
-    def _add_rackets(self, cast):
-        # cast.clear_actors(RACKET_GROUP)
-        # cast.add_actor(RACKET_GROUP, racket)
-        return
+    def _add_paddles(self, cast):
+        cast.clear_actors(PADDLE_GROUP)
+        
+        # COMMON ATTRIBUTES
+        image = Image(PADDLE_IMAGE, 1, 90)
+        size = Point(PADDLE_WIDTH, PADDLE_HEIGHT)
+        velocity = Point(0, 0)
+        y = SCREEN_HEIGHT / 2
+
+        # PLAYER 1
+        x1 = SCREEN_WIDTH - (PADDLE_WIDTH * 2)
+        position1 = Point(x1, y)
+        body1 = Body(position1, size, velocity)       
+        paddle1 = Paddle(body1, image, True)
+
+        # PLAYER 2
+        x2 = SCREEN_WIDTH + (PADDLE_WIDTH * 2)
+        position2 = Point(x2, y)
+        body2 = Body(position2, size, velocity)       
+        paddle2 = Paddle(body2, image, True)
+
+
+        cast.add_actor(PADDLE_GROUP, paddle1)
+        cast.add_actor(PADDLE_GROUP, paddle2)
+
 
     # ----------------------------------------------------------------------------------------------
     # scripting methods

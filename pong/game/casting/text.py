@@ -4,7 +4,7 @@ from constants import *
 class Text:
     """A text message."""
 
-    def __init__(self, value, fontfile = FONT_FILE, size = FONT_LARGE, alignment = ALIGN_LEFT):
+    def __init__(self, value, fontfile = FONT_FILE, size = FONT_SIZE, alignment = ALIGN_LEFT):
         """Constructs a new Text."""
         self._value = value
         self._fontfile = fontfile
