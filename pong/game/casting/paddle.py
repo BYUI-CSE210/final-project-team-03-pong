@@ -7,11 +7,11 @@ class Paddle(Actor):
     """A implement used to hit and bounce the ball in the game."""
     
     def __init__(self, body, image, debug = False):
-        """Constructs a new Bat.
+        """Constructs a new Paddle.
         
         Args:Args:
             body: A new instance of Body.
-            animation: A new instance of Animation.
+            image: A new instance of image.
             debug: If it is being debugged. 
         """
         super().__init__(debug)
@@ -43,12 +43,12 @@ class Paddle(Actor):
         self._body.set_position(new_position)
 
     def swing_up(self):
-        """Steers the paddle to the left."""
+        """Steers the paddle to the up."""
         velocity = Point(0, -PADDLE_VELOCITY)
         self._body.set_velocity(velocity)
         
     def swing_down(self):
-        """Steers the paddle to the right."""
+        """Steers the paddle to the down."""
         velocity = Point(0, PADDLE_VELOCITY)
         self._body.set_velocity(velocity)
     

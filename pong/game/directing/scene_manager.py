@@ -9,6 +9,9 @@ from game.casting.image import Image
 from game.casting.label import Label
 from game.casting.paddle import Paddle 
 from game.scripting.play_sound_action import PlaySoundAction
+from game.scripting.control_paddles_action import ControlPaddlesAction
+from game.scripting.move_ball_action import MoveBallAction
+from game.scripting.move_paddles_action import MovePaddlesAction
 from game.services.raylib.raylib_audio_service import RaylibAudioService
 from game.services.raylib.raylib_keyboard_service import RaylibKeyboardService
 from game.services.raylib.raylib_physics_service import RaylibPhysicsService
@@ -21,6 +24,10 @@ class SceneManager:
     KEYBOARD_SERVICE = RaylibKeyboardService()
     PHYSICS_SERVICE = RaylibPhysicsService()
     VIDEO_SERVICE = RaylibVideoService(GAME_NAME, SCREEN_WIDTH, SCREEN_HEIGHT)
+    CONTROL_PADDLES_ACTION = ControlPaddlesAction(KEYBOARD_SERVICE)
+    MOVE_BALL_ACTION = MoveBallAction()
+    MOVE_PADDLES_ACTION = MovePaddlesAction()
+    
 
     
 
@@ -56,7 +63,7 @@ class SceneManager:
         self._activate_ball(cast)
         cast.clear_actors(DIALOG_GROUP)
         script.clear_actions(INPUT)
-        script.add_action(INPUT, self.CONTROL_PADDLE_ACTION)
+        script.add_action(INPUT, self.CONTROL_PADDLES_ACTION)
         self._add_update_script(script)
         self._add_output_script(script)
 
@@ -164,9 +171,9 @@ class SceneManager:
     def _add_update_script(self, script):
         script.clear_actions(UPDATE)
         script.add_action(UPDATE, self.MOVE_BALL_ACTION)
-        script.add_action(UPDATE, self.MOVE_RACKET_ACTION)
+        script.add_action(UPDATE, self.MOVE_PADDLES_ACTION)
         script.add_action(UPDATE, self.COLLIDE_BORDERS_ACTION)
         script.add_action(UPDATE, self.COLLIDE_BRICKS_ACTION)
         script.add_action(UPDATE, self.COLLIDE_RACKET_ACTION)
-        script.add_action(UPDATE, self.MOVE_RACKET_ACTION)
+        script.add_action(UPDATE, self.MOVE_PADDLES_ACTION)
         script.add_action(UPDATE, self.CHECK_OVER_ACTION)
