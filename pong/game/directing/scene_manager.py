@@ -16,6 +16,7 @@ from game.scripting.move_ball_action import MoveBallAction
 from game.scripting.move_paddles_action import MovePaddlesAction
 from game.scripting.release_devices_action import ReleaseDevicesAction
 from game.scripting.load_assets_action import LoadAssetsAction
+from game.scripting.timed_change_scene_action import TimedChangeSceneAction
 from game.scripting.unload_assets_action import UnloadAssetsAction
 from game.services.raylib.raylib_audio_service import RaylibAudioService
 from game.services.raylib.raylib_keyboard_service import RaylibKeyboardService
@@ -48,6 +49,8 @@ class SceneManager:
             self._prepare_new_game(cast, script)
         elif scene == IN_PLAY:
             self._prepare_in_play(cast, script)
+        elif scene == CONTINUE:
+            self._prepare_continue(cast, script)
         elif scene == GAME_OVER:    
             self._prepare_game_over(cast, script)
     
@@ -58,7 +61,7 @@ class SceneManager:
     def _prepare_new_game(self, cast, script):
         self._add_scores(cast)
         self._add_ball(cast)
-        self._add_paddle(cast)
+        self._add_paddles(cast)
         self._add_dialog(cast, ENTER_TO_START)
         self._add_initialize_script(script)
         self._add_load_script(script)
@@ -67,7 +70,6 @@ class SceneManager:
         self._add_unload_script(script)
         self._add_release_script(script)
         
-
     def _prepare_in_play(self, cast, script):
         self._activate_ball(cast)
         cast.clear_actors(DIALOG_GROUP)
@@ -75,6 +77,17 @@ class SceneManager:
         script.add_action(INPUT, self.CONTROL_PADDLES_ACTION)
         self._add_update_script(script)
         self._add_output_script(script)
+
+    def _prepare_continue(self, cast, script):
+        self._add_scores(cast)
+        self._add_ball(cast)
+        self._add_paddles(cast)
+        self._add_dialog(cast, CONTINUE_MESSAGE)
+
+        script.clear_actions(INPUT)
+        script.add_action(INPUT, TimedChangeSceneAction(CONTINUE, 2))
+        self._add_output_script(script)
+        script.add_action(OUTPUT, PlaySoundAction(self.AUDIO_SERVICE, WELCOME_SOUND))
 
     def _prepare_game_over(self, cast, script):
         self._add_ball(cast)
