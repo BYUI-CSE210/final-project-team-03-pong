@@ -47,7 +47,8 @@ PLAYER_2_DOWN = "l"
 # SCENES
 NEW_GAME = 0
 IN_PLAY = 1
-GAME_OVER = 2
+CONTINUE = 2
+GAME_OVER = 3
 
 # -------------------------------------------------------------------------------------------------- 
 # SCRIPTING CONSTANTS
@@ -66,15 +67,15 @@ RELEASE = 6
 # CASTING CONSTANTS
 # -------------------------------------------------------------------------------------------------- 
 
-# STATS
+# SCORE STATS [NOT HUD]
+SCORE_STATS_GROUP = "scorestats"
 
 # HUD
 HUD_MARGIN = 15
-SCORE_GROUP ="scores"
-PLAYER_1_SCORE = 0
-PLAYER_2_SCORE = 0
-PLAYER_1_SCORE_FORMAT = f"PLAYER 1: {PLAYER_1_SCORE}"
-PLAYER_2_SCORE_FORMAT = f"PLAYER 2: {PLAYER_2_SCORE}"
+MAXIMUM_SCORE = 11
+SCORES_GROUP ="scores"
+PLAYER_1_SCORE_FORMAT = "PLAYER 1: {}"
+PLAYER_2_SCORE_FORMAT = "PLAYER 2: {}"
 
 # BALL
 BALL_GROUP = "balls"

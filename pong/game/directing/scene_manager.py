@@ -8,11 +8,14 @@ from game.casting.text import Text
 from game.casting.image import Image
 from game.casting.label import Label
 from game.casting.paddle import Paddle 
+from game.casting.scores import Scores
 from game.scripting.play_sound_action import PlaySoundAction
+from game.scripting.collide_walls_action import CollideWallsAction
 from game.scripting.control_paddles_action import ControlPaddlesAction
 from game.scripting.move_ball_action import MoveBallAction
 from game.scripting.move_paddles_action import MovePaddlesAction
 from game.scripting.release_devices_action import ReleaseDevicesAction
+from game.scripting.load_assets_action import LoadAssetsAction
 from game.scripting.unload_assets_action import UnloadAssetsAction
 from game.services.raylib.raylib_audio_service import RaylibAudioService
 from game.services.raylib.raylib_keyboard_service import RaylibKeyboardService
@@ -27,9 +30,11 @@ class SceneManager:
     PHYSICS_SERVICE = RaylibPhysicsService()
     VIDEO_SERVICE = RaylibVideoService(GAME_NAME, SCREEN_WIDTH, SCREEN_HEIGHT)
     CONTROL_PADDLES_ACTION = ControlPaddlesAction(KEYBOARD_SERVICE)
+    COLLIDE_WALLS_ACTION = CollideWallsAction
     MOVE_BALL_ACTION = MoveBallAction()
     MOVE_PADDLES_ACTION = MovePaddlesAction()
     RELEASE_DEVICES_ACTION = ReleaseDevicesAction(AUDIO_SERVICE, VIDEO_SERVICE)
+    LOAD_ASSETS_ACTION = LoadAssetsAction(AUDIO_SERVICE, VIDEO_SERVICE)    
     UNLOAD_ASSETS_ACTION = UnloadAssetsAction(AUDIO_SERVICE, VIDEO_SERVICE)
     
 
@@ -108,7 +113,7 @@ class SceneManager:
 
     def _add_scores(self, cast):
         # Player 1 Score
-        cast.clear_actors(SCORE_GROUP)
+        cast.clear_actors(SCORES_GROUP)
         text1 = Text(PLAYER_1_SCORE_FORMAT, FONT_FILE, FONT_SIZE, ALIGN_CENTER)
         position1 = Point(CENTER_X - 50, HUD_MARGIN)
         label1 = Label(text1, position1)
@@ -118,9 +123,13 @@ class SceneManager:
         position2 = Point(CENTER_X + 50, HUD_MARGIN)
         label2 = Label(text2, position2)
 
-        cast.add_actor(SCORE_GROUP, label1)
-        cast.add_actor(SCORE_GROUP, label2) 
+        cast.add_actor(SCORES_GROUP, label1)
+        cast.add_actor(SCORES_GROUP, label2) 
 
+    def _add_score_stats(self, cast):
+        cast.clear_actors(SCORE_STATS_GROUP)
+        score_stats = Scores()
+        cast.add_actor(SCORE_STATS_GROUP, score_stats)
 
     def _add_paddles(self, cast):
         cast.clear_actors(PADDLE_GROUP)
@@ -181,8 +190,7 @@ class SceneManager:
         script.clear_actions(UPDATE)
         script.add_action(UPDATE, self.MOVE_BALL_ACTION)
         script.add_action(UPDATE, self.MOVE_PADDLES_ACTION)
-        script.add_action(UPDATE, self.COLLIDE_BORDERS_ACTION)
-        script.add_action(UPDATE, self.COLLIDE_BRICKS_ACTION)
-        script.add_action(UPDATE, self.COLLIDE_RACKET_ACTION)
+        script.add_action(UPDATE, self.COLLIDE_WALLS_ACTION)
+        script.add_action(UPDATE, self.COLLIDE_PADDLES_ACTION)
         script.add_action(UPDATE, self.MOVE_PADDLES_ACTION)
         script.add_action(UPDATE, self.CHECK_OVER_ACTION)
