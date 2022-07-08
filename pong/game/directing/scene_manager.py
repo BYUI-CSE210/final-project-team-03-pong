@@ -12,6 +12,8 @@ from game.scripting.play_sound_action import PlaySoundAction
 from game.scripting.control_paddles_action import ControlPaddlesAction
 from game.scripting.move_ball_action import MoveBallAction
 from game.scripting.move_paddles_action import MovePaddlesAction
+from game.scripting.release_devices_action import ReleaseDevicesAction
+from game.scripting.unload_assets_action import UnloadAssetsAction
 from game.services.raylib.raylib_audio_service import RaylibAudioService
 from game.services.raylib.raylib_keyboard_service import RaylibKeyboardService
 from game.services.raylib.raylib_physics_service import RaylibPhysicsService
@@ -27,6 +29,8 @@ class SceneManager:
     CONTROL_PADDLES_ACTION = ControlPaddlesAction(KEYBOARD_SERVICE)
     MOVE_BALL_ACTION = MoveBallAction()
     MOVE_PADDLES_ACTION = MovePaddlesAction()
+    RELEASE_DEVICES_ACTION = ReleaseDevicesAction(AUDIO_SERVICE, VIDEO_SERVICE)
+    UNLOAD_ASSETS_ACTION = UnloadAssetsAction(AUDIO_SERVICE, VIDEO_SERVICE)
     
 
     
@@ -83,8 +87,8 @@ class SceneManager:
 
     def _add_ball(self, cast):
         cast.clear_actors(BALL_GROUP)
-        x = CENTER_X - BALL_WIDTH / 2
-        y = SCREEN_WIDTH + PADDLE_WIDTH + BALL_WIDTH
+        x = SCREEN_WIDTH + PADDLE_WIDTH + BALL_WIDTH
+        y = CENTER_Y
         position = Point(x, y)
         size = Point(BALL_WIDTH, BALL_HEIGHT)
         velocity = Point(0, 0)
@@ -102,16 +106,21 @@ class SceneManager:
         cast.add_actor(DIALOG_GROUP, label)
 
 
-    def _add_score(self, cast):
-        # cast.clear_actors(SCORE_GROUP)
-        # cast.add_actor(SCORE_GROUP, label)
-        return
+    def _add_scores(self, cast):
+        # Player 1 Score
+        cast.clear_actors(SCORE_GROUP)
+        text1 = Text(PLAYER_1_SCORE_FORMAT, FONT_FILE, FONT_SIZE, ALIGN_CENTER)
+        position1 = Point(CENTER_X - 50, HUD_MARGIN)
+        label1 = Label(text1, position1)
 
-    def _add_stats(self, cast):
-        # cast.clear_actors(STATS_GROUP)
-        # stats = Stats()
-        # cast.add_actor(STATS_GROUP, stats)
-        return
+        # Player 2 score
+        text2 = Text(PLAYER_2_SCORE_FORMAT, FONT_FILE, FONT_SIZE, ALIGN_CENTER)
+        position2 = Point(CENTER_X + 50, HUD_MARGIN)
+        label2 = Label(text2, position2)
+
+        cast.add_actor(SCORE_GROUP, label1)
+        cast.add_actor(SCORE_GROUP, label2) 
+
 
     def _add_paddles(self, cast):
         cast.clear_actors(PADDLE_GROUP)
@@ -120,7 +129,7 @@ class SceneManager:
         image = Image(PADDLE_IMAGE, 1, 90)
         size = Point(PADDLE_WIDTH, PADDLE_HEIGHT)
         velocity = Point(0, 0)
-        y = SCREEN_HEIGHT / 2
+        y = CENTER_Y
 
         # PLAYER 1
         x1 = SCREEN_WIDTH - (PADDLE_WIDTH * 2)
@@ -156,7 +165,7 @@ class SceneManager:
         script.add_action(OUTPUT, self.DRAW_HUD_ACTION)
         script.add_action(OUTPUT, self.DRAW_BALL_ACTION)
         script.add_action(OUTPUT, self.DRAW_BRICKS_ACTION)
-        script.add_action(OUTPUT, self.DRAW_RACKET_ACTION)
+        script.add_action(OUTPUT, self.DRAW_PADDLES_ACTION)
         script.add_action(OUTPUT, self.DRAW_DIALOG_ACTION)
         script.add_action(OUTPUT, self.END_DRAWING_ACTION)
 
