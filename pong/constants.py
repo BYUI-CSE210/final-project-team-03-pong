@@ -26,6 +26,7 @@ FONT_SIZE = 32
 # SOUND
 BOUNCE_SOUND = "batter/assets/sounds/boing.wav"
 WELCOME_SOUND = "batter/assets/sounds/start.wav"
+OVER_SOUND = "batter/assets/sounds/over.wav"
 
 # TEXT
 ALIGN_CENTER = 0
@@ -97,3 +98,9 @@ PADDLE_VELOCITY = 7
 DIALOG_GROUP = "dialogs"
 CONTINUE_MESSAGE = "GAME WOULD CONTINUE IN A MOMENT"
 ENTER_TO_START = "PRESS ENTER TO START"
+
+
+# STATS
+STATS_GROUP = "stats"
+DEFAULT_LIVES = 0
+MAXIMUM_LIVES = 11
