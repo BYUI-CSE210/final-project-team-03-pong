@@ -9,8 +9,8 @@ class DrawScoresAction(Action):
         
     def execute(self, cast, script, callback):
         stats = cast.get_first_actor(SCORE_STATS_GROUP)
-        self._draw_label(cast, SCORES_GROUP, PLAYER_1_SCORE_FORMAT, stats.get_score(1))
-        self._draw_label(cast, SCORES_GROUP, PLAYER_2_SCORE_FORMAT, stats.get_score(2))
+        self._draw_label(cast, SCORE_1_GROUP, PLAYER_1_SCORE_FORMAT, stats.get_score(1))
+        self._draw_label(cast, SCORE_2_GROUP, PLAYER_2_SCORE_FORMAT, stats.get_score(2))
 
     def _draw_label(self, cast, group, format_str, data):
         label = cast.get_first_actor(group)
