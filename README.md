@@ -1,6 +1,6 @@
 # Pong
 
-Pong is a classic two-player game based on table tennis. Players control the paddles that move vertically on opposite sides of the screen. Players use the paddles to hit the ball back and forth across the screen. The score is kept at the top of the screen. Points are earned when a player fails to hit the ball back to their opponent. The first player to reach a score of 11 wins.
+Pong is a classic two-player game based on table tennis. Players control the paddles that move vertically on opposite sides of the screen. Players use the paddles to hit the ball back and forth across the screen. The paddles are controlled using the keyboard, 'q'= up for player 1, 'a'= down for player 1, 'p'= up for player 2 and 'l' = down for player 2. The score is kept at the top of the screen. Points are earned when a player fails to hit the ball back to their opponent. The first player to reach a score of 11 wins.
 
 ## Getting Started
 
