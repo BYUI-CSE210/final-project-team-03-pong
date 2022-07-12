@@ -21,7 +21,7 @@ FIELD_LEFT = 0
 FIELD_RIGHT = SCREEN_WIDTH
 
 # FONT
-FONT_FILE = "pong/assets/fonts/ka1.ttf"
+FONT_FILE = "pong/assets/fonts/upheavtt.ttf"
 FONT_SIZE = 30
 
 # SOUND
@@ -80,8 +80,8 @@ HUD_MARGIN = 5
 MAXIMUM_SCORE = 11
 SCORE_1_GROUP ="score_1"
 SCORE_2_GROUP ="score_2"
-PLAYER_1_SCORE_FORMAT = "PLAYER 1: {}"
-PLAYER_2_SCORE_FORMAT = "PLAYER 2: {}"
+PLAYER_1_SCORE_FORMAT = "PLAYER 1 : {} "
+PLAYER_2_SCORE_FORMAT = "PLAYER 2 : {}"
 
 # BALL
 BALL_GROUP = "balls"
@@ -100,7 +100,7 @@ PADDLE_VELOCITY = 7
 
 # MIDLINE DIVIDER
 DIVIDER_GROUP = "divider"
-DIVIDER_IMAGE = "pong/assets/images/divider.svg"
+DIVIDER_IMAGE = "pong/assets/images/divider.png"
 DIVIDER_WIDTH = 5
 DIVIDER_HEIGHT = 680
 

@@ -1,4 +1,5 @@
 # IMPORT STUFF HERE
+from turtle import position
 from constants import *
 
 from game.casting.ball import Ball
@@ -9,6 +10,7 @@ from game.casting.image import Image
 from game.casting.label import Label
 from game.casting.paddle import Paddle 
 from game.casting.scores import Scores
+from game.casting.divider import BoardDivider
 from game.casting.sound import Sound
 from game.scripting.start_drawing_action import StartDrawingAction
 from game.scripting.end_drawing_action import EndDrawingAction
@@ -17,6 +19,7 @@ from game.scripting.draw_scores_action import DrawScoresAction
 from game.scripting.draw_ball_action import DrawBallAction
 from game.scripting.draw_paddles_action import DrawPaddlesAction
 from game.scripting.draw_dialog_action import DrawDialogAction
+from game.scripting.draw_divider_action import DrawDividerAction
 from game.scripting.play_sound_action import PlaySoundAction
 from game.scripting.initialize_devices_action import InitializeDevicesAction
 from game.scripting.collide_walls_action import CollideWallsAction
@@ -47,6 +50,7 @@ class SceneManager:
     DRAW_BALL_ACTION = DrawBallAction(VIDEO_SERVICE)
     DRAW_PADDLES_ACTION = DrawPaddlesAction(VIDEO_SERVICE)
     DRAW_DIALOG_ACTION = DrawDialogAction(VIDEO_SERVICE)
+    DRAW_DIVIDER_ACTION = DrawDividerAction(VIDEO_SERVICE)
     CONTROL_PADDLES_ACTION = ControlPaddlesAction(KEYBOARD_SERVICE)
     COLLIDE_WALLS_ACTION = CollideWallsAction(PHYSICS_SERVICE, AUDIO_SERVICE)
     COLLIDE_PADDLES_ACTION = CollidePaddlesAction(PHYSICS_SERVICE, AUDIO_SERVICE)
@@ -80,6 +84,7 @@ class SceneManager:
     
     def _prepare_new_game(self, cast, script):
         self._add_scores(cast)
+        self._add_divider(cast)
         self._add_score_stats(cast)
         self._add_ball(cast)
         self._add_paddles(cast)
@@ -149,6 +154,15 @@ class SceneManager:
         ball = Ball(body, image, True)
         cast.add_actor(BALL_GROUP, ball)
 
+    def _add_divider(self, cast):
+        cast.clear_actors(DIVIDER_GROUP)
+        image = Image(DIVIDER_IMAGE)
+        position = Point(CENTER_X, 0)
+        size = Point(DIVIDER_WIDTH, DIVIDER_HEIGHT)
+        velocity = Point(0, 0)
+        body = Body(position, size, velocity)
+        divider = BoardDivider(body, image)
+        cast.add_actor(DIVIDER_GROUP, divider)
 
     def _add_dialog(self, cast, message):
         cast.clear_actors(DIALOG_GROUP)
@@ -224,6 +238,7 @@ class SceneManager:
         script.add_action(OUTPUT, self.DRAW_SCORES_ACTION)
         script.add_action(OUTPUT, self.DRAW_BALL_ACTION)
         script.add_action(OUTPUT, self.DRAW_PADDLES_ACTION)
+        script.add_action(OUTPUT, self.DRAW_DIVIDER_ACTION)
         script.add_action(OUTPUT, self.DRAW_DIALOG_ACTION)
         script.add_action(OUTPUT, self.END_DRAWING_ACTION)
 
