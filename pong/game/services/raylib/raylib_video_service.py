@@ -123,3 +123,6 @@ class RaylibVideoService(VideoService):
     def _to_raylib_color(self, color):
         r, g, b, a = color.to_tuple()
         return pyray.Color(r, g, b, a)
+
+    def set_color(self,color):
+        self._color = color

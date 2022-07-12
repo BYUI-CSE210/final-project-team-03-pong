@@ -9,6 +9,7 @@ from game.casting.image import Image
 from game.casting.label import Label
 from game.casting.paddle import Paddle 
 from game.casting.scores import Scores
+from game.casting.sound import Sound
 from game.scripting.start_drawing_action import StartDrawingAction
 from game.scripting.end_drawing_action import EndDrawingAction
 from game.scripting.change_scene_action import ChangeSceneAction
@@ -83,7 +84,6 @@ class SceneManager:
         self._add_ball(cast)
         self._add_paddles(cast)
         self._add_dialog(cast, ENTER_TO_START)
-        print("NEW GAME STARTED")
         self._add_initialize_script(script)
         self._add_load_script(script)
 
@@ -94,7 +94,6 @@ class SceneManager:
         self._add_release_script(script)
         
     def _prepare_next_level(self, cast, script):
-        print("NEXT LEVEL STARTED")
         self._add_ball(cast)
         self._add_paddles(cast)
 
@@ -106,7 +105,6 @@ class SceneManager:
 
 
     def _prepare_in_play(self, cast, script):
-        print("IN PLAY STARTED")
         self._activate_ball(cast)
         cast.clear_actors(DIALOG_GROUP)
         script.clear_actions(INPUT)
@@ -115,7 +113,6 @@ class SceneManager:
         self._add_output_script(script)
 
     def _prepare_continue(self, cast, script):
-        print("CONTINUE GAME STARTED")
         self._add_ball(cast)
         self._add_paddles(cast)
         self._add_dialog(cast, CONTINUE_MESSAGE)
@@ -124,10 +121,12 @@ class SceneManager:
         script.add_action(INPUT, TimedChangeSceneAction(IN_PLAY, 2))
 
     def _prepare_game_over(self, cast, script):
-        print("GAME OVER STARTED")
         self._add_ball(cast)
         script.clear_actions(INPUT)
         script.clear_actions(UPDATE)
+        self.AUDIO_SERVICE.play_sound(Sound(OVER_SOUND))
+        self.VIDEO_SERVICE.set_color(GREEN)     
+        self._add_dialog(cast, PLAYER_WINS_MESSAGE)
         self._add_output_script(script)
 
     # ----------------------------------------------------------------------------------------------
@@ -163,13 +162,13 @@ class SceneManager:
         # Player 1 Score
         cast.clear_actors(SCORE_1_GROUP)
         text1 = Text(PLAYER_1_SCORE_FORMAT, FONT_FILE, FONT_SIZE, ALIGN_CENTER)
-        position1 = Point(CENTER_X - 100, HUD_MARGIN)
+        position1 = Point(CENTER_X - 150, HUD_MARGIN)
         label1 = Label(text1, position1)
 
         # Player 2 Score
         cast.clear_actors(SCORE_2_GROUP)
         text2 = Text(PLAYER_2_SCORE_FORMAT, FONT_FILE, FONT_SIZE, ALIGN_CENTER)
-        position2 = Point(CENTER_X + 100, HUD_MARGIN)
+        position2 = Point(CENTER_X + 150, HUD_MARGIN)
         label2 = Label(text2, position2)
 
         cast.add_actor(SCORE_1_GROUP, label1)
@@ -213,12 +212,10 @@ class SceneManager:
     def _add_initialize_script(self, script):
         script.clear_actions(INITIALIZE)
         script.add_action(INITIALIZE, self.INITIALIZE_DEVICES_ACTION)
-        print("INITIALIZE SCRIPT ADDED")
 
     def _add_load_script(self, script):
         script.clear_actions(LOAD)
         script.add_action(LOAD, self.LOAD_ASSETS_ACTION)
-        print("LOAD SCRIPT ADDED")
 
     
     def _add_output_script(self, script):
@@ -229,17 +226,14 @@ class SceneManager:
         script.add_action(OUTPUT, self.DRAW_PADDLES_ACTION)
         script.add_action(OUTPUT, self.DRAW_DIALOG_ACTION)
         script.add_action(OUTPUT, self.END_DRAWING_ACTION)
-        print("OUTPUT SCRIPT ADDED")
 
     def _add_release_script(self, script):
         script.clear_actions(RELEASE)
         script.add_action(RELEASE, self.RELEASE_DEVICES_ACTION)
-        print("RELEASE SCRIPT ADDED")
     
     def _add_unload_script(self, script):
         script.clear_actions(UNLOAD)
         script.add_action(UNLOAD, self.UNLOAD_ASSETS_ACTION)
-        print("UNLOAD SCRIPT ADDED")
         
     def _add_update_script(self, script):
         script.clear_actions(UPDATE)
@@ -249,4 +243,3 @@ class SceneManager:
         script.add_action(UPDATE, self.COLLIDE_WALLS_ACTION)
         script.add_action(UPDATE, self.COLLIDE_PADDLES_ACTION)
         script.add_action(UPDATE, self.MOVE_PADDLES_ACTION)
-        print("UPDATE SCRIPT ADDED")

@@ -21,8 +21,8 @@ FIELD_LEFT = 0
 FIELD_RIGHT = SCREEN_WIDTH
 
 # FONT
-FONT_FILE = "pong/assets/fonts/zorque.otf"
-FONT_SIZE = 32
+FONT_FILE = "pong/assets/fonts/ka1.ttf"
+FONT_SIZE = 30
 
 # SOUND
 BOUNCE_SOUND = "pong/assets/sounds/boing.wav"
@@ -36,6 +36,7 @@ ALIGN_RIGHT = 2
 
 # COLORS
 BLACK = Color(0, 0, 0)
+GREEN = Color(65, 220, 125)
 BLUE = Color(0, 93, 243)
 WHITE = Color(255, 255, 255)
 PURPLE = Color(255, 0, 255)
@@ -102,6 +103,7 @@ PADDLE_VELOCITY = 7
 DIALOG_GROUP = "dialogs"
 CONTINUE_MESSAGE = "GAME WOULD CONTINUE IN A MOMENT"
 ENTER_TO_START = "PRESS ENTER TO START"
+PLAYER_WINS_MESSAGE = "GAME ENDED"
 
 
 # STATS
